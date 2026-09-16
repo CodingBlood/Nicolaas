@@ -312,7 +312,7 @@
   </div>
 
   <h2 class="section-title">Upcoming weeks</h2>
-  <p class="section-sub">Everything rotates every week — same person does toilet, washroom &amp; floors, and trash for their turn. Tap the circle on this week's card once a task is done.</p>
+  <p class="section-sub">Everything rotates every week — same person does toilet, washroom &amp; floors for their turn. Tap the circle on this week's card once a task is done.</p>
   <div id="calendar"></div>
 
   <h2 class="section-title">Full plan, by area</h2>
@@ -366,9 +366,6 @@
   const OTHER_FREQ_DAYS = 7;
   const OTHER_ORDER = ["Kartik", "Chris", "Vladimir"];
 
-  // Trash out: every TRASH_FREQ_DAYS, cycling through TRASH_ORDER.
-  const TRASH_FREQ_DAYS = 7;
-  const TRASH_ORDER = ["Kartik", "Chris", "Vladimir"];
 
   const TURNS_TO_SHOW = 12; // each turn spans OTHER_FREQ_DAYS, so 12 turns = 12 weeks
 
@@ -451,7 +448,6 @@
       const val = snap.val() || {};
       setToggleState(document.getElementById('toiletDone'), val.toilet);
       setToggleState(document.getElementById('otherDone'), val.other);
-      setToggleState(document.getElementById('trashDone'), val.trash);
     });
   }
 
@@ -463,7 +459,7 @@
     ref.once('value').then(snap => ref.set(!snap.val()));
   }
 
-  ['toilet','other','trash'].forEach(key => {
+  ['toilet','other'].forEach(key => {
     const btn = document.getElementById(key + 'Done');
     if(btn) btn.addEventListener('click', () => toggleDuty(key));
   });
@@ -490,14 +486,11 @@
     // This-turn card
     const toilet = assigneeForWeek(currentTurnStart, startUTC, TOILET_FREQ_DAYS, TOILET_ORDER);
     const other = assigneeForWeek(currentTurnStart, startUTC, OTHER_FREQ_DAYS, OTHER_ORDER);
-    const trash = assigneeForWeek(currentTurnStart, startUTC, TRASH_FREQ_DAYS, TRASH_ORDER);
     document.getElementById('nowRange').textContent = fmtRange(currentTurnStart, currentTurnEnd);
     document.getElementById('toiletBadge').textContent = initials(toilet.name);
     document.getElementById('toiletName').textContent = toilet.name;
     document.getElementById('otherBadge').textContent = initials(other.name);
     document.getElementById('otherName').textContent = other.name;
-    document.getElementById('trashBadge').textContent = initials(trash.name);
-    document.getElementById('trashName').textContent = trash.name;
 
     // Keep the tick-off state synced to this turn's key
     const turnKey = isoDate(currentTurnStart);
@@ -515,7 +508,6 @@
       const turnEnd = addDaysUTC(turnStart, TURN_DAYS - 1);
       const t = assigneeForWeek(turnStart, startUTC, TOILET_FREQ_DAYS, TOILET_ORDER);
       const o = assigneeForWeek(turnStart, startUTC, OTHER_FREQ_DAYS, OTHER_ORDER);
-      const x = assigneeForWeek(turnStart, startUTC, TRASH_FREQ_DAYS, TRASH_ORDER);
       const isCurrent = i === 0;
 
       const wkStartNum = (turnsSinceStart + i) * weeksPerTurn + 1;
@@ -530,7 +522,6 @@
         <div class="week-duties">
           <div><span class="tag">TOILET</span>${t.name}</div>
           <div><span class="tag">WASH+MOP</span>${o.name}</div>
-          <div><span class="tag">TRASH</span>${x.name}</div>
         </div>
       `;
       cal.appendChild(card);
