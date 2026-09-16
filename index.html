@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa 349 — Schoonmaakrooster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     CONFIG — edit these to change names, order, or frequency.
+     The page below reads only from these variables (and the
+     matching block in the <script> at the bottom).
+     ============================================================ */
+
+  :root{
+    --delft-deep:   #163a63;
+    --delft:        #2b5e9b;
+    --delft-mid:    #4d7fb8;
+    --delft-light:  #a9c4e2;
+    --delft-pale:   #eef3f9;
+    --cream:        #f7f3e9;
+    --white:        #ffffff;
+    --amber:        #1f7a6c;
+    --amber-soft:   #d9ece8;
+    --ink:          #17293e;
+    --ink-soft:     #4c6079;
+    --rule:         #d7c9a8;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .tile-rule{
+    height:14px;
+    background-image: repeating-linear-gradient(45deg, var(--delft-mid) 0 2px, transparent 2px 10px);
+    opacity:0.55;
+  }
+
+  header.hero{
+    background: var(--delft-deep);
+    color: var(--cream);
+    padding: 32px 20px 26px;
+    position:relative;
+    background-image:
+      radial-gradient(circle at 12px 12px, rgba(255,255,255,0.05) 1.5px, transparent 1.6px);
+    background-size: 26px 26px;
+  }
+  .hero-inner{ max-width:640px; margin:0 auto; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--delft-light);
+    margin:0 0 10px;
+  }
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(30px, 8vw, 42px);
+    line-height:1.05;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .address{
+    font-size:14px;
+    color:var(--delft-light);
+    margin:0 0 18px;
+  }
+  .clock{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--cream);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:3px;
+  }
+
+  main{ max-width:640px; margin:0 auto; padding:22px 18px 60px; }
+
+  /* This week card */
+  .now-card{
+    background:var(--white);
+    border:1px solid var(--rule);
+    border-left:6px solid var(--amber);
+    border-radius:4px;
+    padding:22px 20px;
+    margin:-18px 0 26px;
+    box-shadow:0 10px 24px -14px rgba(22,58,99,0.35);
+    position:relative;
+    z-index:2;
+  }
+  .now-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin:0 0 4px;
+  }
+  .now-range{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .duty-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 0;
+    border-top:1px solid var(--delft-pale);
+  }
+  .duty-row:first-of-type{ border-top:none; }
+  .badge{
+    flex:0 0 auto;
+    width:46px; height:46px;
+    border-radius:50%;
+    background:var(--delft-pale);
+    border:2px solid var(--delft-mid);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:12px;
+    color:var(--delft-deep);
+  }
+  .duty-text{ flex:1 1 auto; min-width:0; }
+  .duty-text .duty-task{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .duty-text .duty-name{
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .done-toggle{
+    flex:0 0 auto;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:2px solid var(--delft-light);
+    background:var(--white);
+    color:transparent;
+    font-size:17px;
+    font-weight:700;
+    line-height:1;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
+  }
+  .done-toggle:active{ transform:scale(0.92); }
+  .done-toggle.checked{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:var(--white);
+  }
+  .done-toggle.pending{ opacity:0.5; }
+
+  h2.section-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:34px 0 4px;
+    color:var(--delft-deep);
+  }
+  .section-sub{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+
+  #calendar{
+    max-height:420px;
+    overflow-y:auto;
+    padding-right:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #calendar::-webkit-scrollbar{ width:6px; }
+  #calendar::-webkit-scrollbar-thumb{ background:var(--delft-light); border-radius:3px; }
+
+  .week-card{
+    background:var(--white);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:13px 16px;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .week-card.current{
+    border-color:var(--amber);
+    background:var(--amber-soft);
+  }
+  .week-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--delft);
+    width:44px;
+    flex:0 0 auto;
+  }
+  .week-card.current .week-num{ color:var(--amber); font-weight:700; }
+  .week-dates{
+    font-size:12px;
+    color:var(--ink-soft);
+    width:92px;
+    flex:0 0 auto;
+  }
+  .week-duties{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    flex:1 1 auto;
+    font-size:13px;
+  }
+  .week-duties span.tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--delft);
+    margin-right:6px;
+  }
+
+  .rules{
+    background:var(--delft-pale);
+    border-radius:4px;
+    padding:18px 18px 6px;
+    margin-top:32px;
+  }
+  .rules-group{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--delft);
+    margin:0 0 8px;
+    padding-top:16px;
+  }
+  .rules-group:first-child{ padding-top:0; }
+  .rules ul{ margin:0; padding-left:18px; }
+  .rules li{
+    font-size:13.5px;
+    line-height:1.6;
+    margin-bottom:12px;
+    color:var(--ink);
+  }
+  .rules li b{ color:var(--delft-deep); }
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:36px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .now-card{ animation: rise .5s ease-out; }
+    @keyframes rise{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Schoonmaakrooster</p>
+    <h1 class="title">Casa 349</h1>
+    <p class="address">Isaac da Costalaan 349 · Delft</p>
+    <div class="clock" id="clock">—</div>
+  </div>
+</header>
+<div class="tile-rule"></div>
+
+<main>
+
+  <div class="now-card" id="nowCard">
+    <p class="now-label">This turn</p>
+    <p class="now-range" id="nowRange">—</p>
+    <div class="duty-row">
+      <div class="badge" id="toiletBadge">--</div>
+      <div class="duty-text">
+        <div class="duty-task">Toilet</div>
+        <div class="duty-name" id="toiletName">—</div>
+      </div>
+      <button class="done-toggle" id="toiletDone" aria-label="Mark toilet done">✓</button>
+    </div>
+    <div class="duty-row">
+      <div class="badge" id="otherBadge">--</div>
+      <div class="duty-text">
+        <div class="duty-task">Washroom + mop all floors</div>
+        <div class="duty-name" id="otherName">—</div>
+      </div>
+      <button class="done-toggle" id="otherDone" aria-label="Mark washroom and mop done">✓</button>
+    </div>
+    <div class="duty-row">
+      <div class="badge" id="trashBadge">--</div>
+      <div class="duty-text">
+        <div class="duty-task">Trash out</div>
+        <div class="duty-name" id="trashName">—</div>
+      </div>
+      <button class="done-toggle" id="trashDone" aria-label="Mark trash done">✓</button>
+    </div>
+  </div>
+
+  <h2 class="section-title">Upcoming weeks</h2>
+  <p class="section-sub">Everything rotates every week — same person does toilet, washroom &amp; floors, and trash for their turn. Tap the circle on this week's card once a task is done.</p>
+  <div id="calendar"></div>
+
+  <h2 class="section-title">Full plan, by area</h2>
+  <p class="section-sub">What's on a rotation vs. what's everyone's own responsibility</p>
+  <div class="rules">
+
+    <p class="rules-group">On the roster above</p>
+    <ul>
+      <li><b>Toilet, washroom &amp; floors</b> — all done together by the same person, every Sunday (weekly). Floors means drawing room, kitchen, and washroom floors, mopped in one go.</li>
+      <li><b>Trash</b> — taking bins out is now a weekly assigned duty on the same rotation, not a whoever-notices job. Tick it off on this week's card once it's done.</li>
+    </ul>
+
+    <p class="rules-group">Not on the roster — instant, whoever caused it</p>
+    <ul>
+      <li><b>Kitchen slab &amp; sink</b> — clean right after cooking, every single time, no rotation.</li>
+      <li><b>Dining table</b> — if you make it dirty, clean it right away.</li>
+      <li><b>Fridge &amp; kitchen cupboard</b> — everyone is responsible only for their own mess inside.</li>
+    </ul>
+
+    <p class="rules-group">Not on the roster</p>
+    <ul>
+      <li><b>Personal rooms</b> — fully self-managed, not tracked here at all.</li>
+    </ul>
+
+    <p class="rules-group">Logistics</p>
+    <ul>
+      <li><b>Swaps</b> — arranged manually between roommates if someone's away; no penalty system.</li>
+    </ul>
+  </div>
+
+  <footer>Times shown in Europe/Amsterdam (Delft) · config at top of page source</footer>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  /* ============================================================
+     CONFIG — change these to adjust the whole schedule.
+     ============================================================ */
+
+  const TIMEZONE = "Europe/Amsterdam";
+
+  // First Sunday the roster starts counting from (YYYY-MM-DD).
+  const START_DATE = "2026-08-23";
+
+  // Toilet: cleaned every TOILET_FREQ_DAYS, cycling through TOILET_ORDER.
+  const TOILET_FREQ_DAYS = 7;
+  const TOILET_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+
+  // Washroom + mopping all floors: every OTHER_FREQ_DAYS, cycling through OTHER_ORDER.
+  const OTHER_FREQ_DAYS = 7;
+  const OTHER_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+
+  // Trash out: every TRASH_FREQ_DAYS, cycling through TRASH_ORDER.
+  const TRASH_FREQ_DAYS = 7;
+  const TRASH_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+
+  const TURNS_TO_SHOW = 12; // each turn spans OTHER_FREQ_DAYS, so 12 turns = 12 weeks
+
+  // Firebase — shared tick-off state so everyone's phone stays in sync.
+  const firebaseConfig = {
+    apiKey: "AIzaSyBN2oWhdBh-usQB2CjfmYmNxZN-PCvnA2Y",
+    authDomain: "casa349-dca82.firebaseapp.com",
+    databaseURL: "https://casa349-dca82-default-rtdb.firebaseio.com",
+    projectId: "casa349-dca82",
+    storageBucket: "casa349-dca82.firebasestorage.app",
+    messagingSenderId: "939122672039",
+    appId: "1:939122672039:web:a745d57d8f6f2030f5b682",
+    measurementId: "G-68K7WSMCBW"
+  };
+
+  /* ============================================================
+     Logic — shouldn't need to touch below this line.
+     ============================================================ */
+
+  function delftTodayUTC(){
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'
+    }).formatToParts(new Date());
+    const y = parts.find(p=>p.type==='year').value;
+    const m = parts.find(p=>p.type==='month').value;
+    const d = parts.find(p=>p.type==='day').value;
+    return new Date(Date.UTC(+y, +m-1, +d));
+  }
+
+  function parseUTC(dateStr){
+    const [y,m,d] = dateStr.split('-').map(Number);
+    return new Date(Date.UTC(y, m-1, d));
+  }
+
+  function addDaysUTC(date, days){
+    return new Date(date.getTime() + days*86400000);
+  }
+
+  function fmtRange(start, end){
+    const opts = { day:'numeric', month:'short', timeZone:'UTC' };
+    return `${start.toLocaleDateString('en-GB', opts)} – ${end.toLocaleDateString('en-GB', opts)}`;
+  }
+
+  function initials(name){
+    // "111-2" -> "111-2" fits fine in the badge already; keep as-is.
+    return name;
+  }
+
+  function assigneeForWeek(weekStartUTC, startUTC, freqDays, order){
+    const daysSince = Math.floor((weekStartUTC - startUTC) / 86400000);
+    const period = Math.floor(daysSince / freqDays);
+    const idx = ((period % order.length) + order.length) % order.length;
+    return { name: order[idx], period };
+  }
+
+  /* ---------- Tick-off sync (Firebase Realtime Database) ---------- */
+
+  let db = null;
+  try{
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  }catch(e){ console.error('Firebase init failed:', e); }
+
+  let currentTurnKey = null;
+  let completionRef = null;
+
+  function isoDate(d){ return d.toISOString().slice(0,10); }
+
+  function setToggleState(el, checked){
+    if(!el) return;
+    el.classList.remove('pending');
+    el.classList.toggle('checked', !!checked);
+  }
+
+  function attachCompletionListener(turnKey){
+    if(!db) return;
+    if(completionRef) completionRef.off();
+    completionRef = db.ref('completions/' + turnKey);
+    completionRef.on('value', snap => {
+      const val = snap.val() || {};
+      setToggleState(document.getElementById('toiletDone'), val.toilet);
+      setToggleState(document.getElementById('otherDone'), val.other);
+      setToggleState(document.getElementById('trashDone'), val.trash);
+    });
+  }
+
+  function toggleDuty(key){
+    if(!db || !currentTurnKey) return;
+    const btn = document.getElementById(key + 'Done');
+    if(btn) btn.classList.add('pending');
+    const ref = db.ref('completions/' + currentTurnKey + '/' + key);
+    ref.once('value').then(snap => ref.set(!snap.val()));
+  }
+
+  ['toilet','other','trash'].forEach(key => {
+    const btn = document.getElementById(key + 'Done');
+    if(btn) btn.addEventListener('click', () => toggleDuty(key));
+  });
+
+  function render(){
+    const startUTC = parseUTC(START_DATE);
+    const todayUTC = delftTodayUTC();
+
+    // A "turn" is one full rotation period — since toilet and washroom/floors
+    // share the same frequency, one person's turn covers both duties together.
+    const TURN_DAYS = OTHER_FREQ_DAYS;
+    const daysSinceStart = Math.floor((todayUTC - startUTC) / 86400000);
+    const turnsSinceStart = Math.floor(daysSinceStart / TURN_DAYS);
+    const currentTurnStart = addDaysUTC(startUTC, turnsSinceStart * TURN_DAYS);
+    const currentTurnEnd = addDaysUTC(currentTurnStart, TURN_DAYS - 1);
+
+    // Live clock
+    const clockStr = new Intl.DateTimeFormat('en-GB', {
+      timeZone: TIMEZONE, weekday:'long', day:'numeric', month:'long',
+      hour:'2-digit', minute:'2-digit'
+    }).format(new Date());
+    document.getElementById('clock').textContent = clockStr + ' · Delft time';
+
+    // This-turn card
+    const toilet = assigneeForWeek(currentTurnStart, startUTC, TOILET_FREQ_DAYS, TOILET_ORDER);
+    const other = assigneeForWeek(currentTurnStart, startUTC, OTHER_FREQ_DAYS, OTHER_ORDER);
+    const trash = assigneeForWeek(currentTurnStart, startUTC, TRASH_FREQ_DAYS, TRASH_ORDER);
+    document.getElementById('nowRange').textContent = fmtRange(currentTurnStart, currentTurnEnd);
+    document.getElementById('toiletBadge').textContent = initials(toilet.name);
+    document.getElementById('toiletName').textContent = toilet.name;
+    document.getElementById('otherBadge').textContent = initials(other.name);
+    document.getElementById('otherName').textContent = other.name;
+    document.getElementById('trashBadge').textContent = initials(trash.name);
+    document.getElementById('trashName').textContent = trash.name;
+
+    // Keep the tick-off state synced to this turn's key
+    const turnKey = isoDate(currentTurnStart);
+    if(turnKey !== currentTurnKey){
+      currentTurnKey = turnKey;
+      attachCompletionListener(turnKey);
+    }
+
+    // Calendar list — one tile per turn (covers all its weeks at once)
+    const cal = document.getElementById('calendar');
+    cal.innerHTML = '';
+    const weeksPerTurn = TURN_DAYS / 7;
+    for(let i=0; i<TURNS_TO_SHOW; i++){
+      const turnStart = addDaysUTC(startUTC, (turnsSinceStart + i) * TURN_DAYS);
+      const turnEnd = addDaysUTC(turnStart, TURN_DAYS - 1);
+      const t = assigneeForWeek(turnStart, startUTC, TOILET_FREQ_DAYS, TOILET_ORDER);
+      const o = assigneeForWeek(turnStart, startUTC, OTHER_FREQ_DAYS, OTHER_ORDER);
+      const x = assigneeForWeek(turnStart, startUTC, TRASH_FREQ_DAYS, TRASH_ORDER);
+      const isCurrent = i === 0;
+
+      const wkStartNum = (turnsSinceStart + i) * weeksPerTurn + 1;
+      const wkEndNum = wkStartNum + weeksPerTurn - 1;
+      const wkLabel = weeksPerTurn > 1 ? `WK ${wkStartNum}–${wkEndNum}` : `WK ${wkStartNum}`;
+
+      const card = document.createElement('div');
+      card.className = 'week-card' + (isCurrent ? ' current' : '');
+      card.innerHTML = `
+        <div class="week-num">${wkLabel}</div>
+        <div class="week-dates">${fmtRange(turnStart, turnEnd)}</div>
+        <div class="week-duties">
+          <div><span class="tag">TOILET</span>${t.name}</div>
+          <div><span class="tag">WASH+MOP</span>${o.name}</div>
+          <div><span class="tag">TRASH</span>${x.name}</div>
+        </div>
+      `;
+      cal.appendChild(card);
+    }
+  }
+
+  render();
+  setInterval(render, 60000);
+
+  // Re-check the date whenever the tab/app becomes visible again
+  // (covers phones that were asleep or a tab left open across midnight).
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') render();
+  });
+</script>
+
+</body>
+</html>
