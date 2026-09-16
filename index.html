@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Casa 349 — Schoonmaakrooster</title>
+<title>Nico 111 — Schoonmaakrooster</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -330,7 +330,6 @@
     <p class="rules-group">On the roster above</p>
     <ul>
       <li><b>Toilet, washroom &amp; floors</b> — all done together by the same person, every Sunday (weekly). Floors means drawing room, kitchen, and washroom floors, mopped in one go.</li>
-      <li><b>Trash</b> — taking bins out is now a weekly assigned duty on the same rotation, not a whoever-notices job. Tick it off on this week's card once it's done.</li>
     </ul>
 
     <p class="rules-group">Not on the roster — instant, whoever caused it</p>
@@ -338,6 +337,7 @@
       <li><b>Kitchen slab &amp; sink</b> — clean right after cooking, every single time, no rotation.</li>
       <li><b>Dining table</b> — if you make it dirty, clean it right away.</li>
       <li><b>Fridge &amp; kitchen cupboard</b> — everyone is responsible only for their own mess inside.</li>
+      <li><b>Trash</b> — Whoever sees it's full.</li>
     </ul>
 
     <p class="rules-group">Not on the roster</p>
@@ -364,32 +364,32 @@
   const TIMEZONE = "Europe/Amsterdam";
 
   // First Sunday the roster starts counting from (YYYY-MM-DD).
-  const START_DATE = "2026-08-23";
+  const START_DATE = "2026-09-16";
 
   // Toilet: cleaned every TOILET_FREQ_DAYS, cycling through TOILET_ORDER.
   const TOILET_FREQ_DAYS = 7;
-  const TOILET_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+  const TOILET_ORDER = ["Kartik", "Chris", "Vladimir"];
 
   // Washroom + mopping all floors: every OTHER_FREQ_DAYS, cycling through OTHER_ORDER.
   const OTHER_FREQ_DAYS = 7;
-  const OTHER_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+  const OTHER_ORDER = ["Kartik", "Chris", "Vladimir"];
 
   // Trash out: every TRASH_FREQ_DAYS, cycling through TRASH_ORDER.
   const TRASH_FREQ_DAYS = 7;
-  const TRASH_ORDER = ["Ishwari", "Aishwarya", "Amelie"];
+  const TRASH_ORDER = ["Kartik", "Chris", "Vladimir"];
 
   const TURNS_TO_SHOW = 12; // each turn spans OTHER_FREQ_DAYS, so 12 turns = 12 weeks
 
   // Firebase — shared tick-off state so everyone's phone stays in sync.
   const firebaseConfig = {
-    apiKey: "AIzaSyBN2oWhdBh-usQB2CjfmYmNxZN-PCvnA2Y",
-    authDomain: "casa349-dca82.firebaseapp.com",
-    databaseURL: "https://casa349-dca82-default-rtdb.firebaseio.com",
-    projectId: "casa349-dca82",
-    storageBucket: "casa349-dca82.firebasestorage.app",
-    messagingSenderId: "939122672039",
-    appId: "1:939122672039:web:a745d57d8f6f2030f5b682",
-    measurementId: "G-68K7WSMCBW"
+    apiKey: "AIzaSyAMNJDuNpkDQuyZDE7N56CoTmG-u5CAcVs",
+    authDomain: "nicolaas-b9980.firebaseapp.com",
+    databaseURL: "https://nicolaas-b9980-default-rtdb.firebaseio.com",
+    projectId: "nicolaas-b9980",
+    storageBucket: "nicolaas-b9980.firebasestorage.app",
+    messagingSenderId: "175192590168",
+    appId: "1:175192590168:web:78a670424c415e2a30c72d",
+    measurementId: "G-DBQ2EKCMF6"
   };
 
   /* ============================================================
